@@ -33,7 +33,7 @@ const RoomView = () => {
 	const [onlineUsers, setOnlineUsers] = useState<Array<any>>([]);
 	const [showEmoji, setShowEmoji] = useState<boolean>(false);
 
-	const socketIO = io(import.meta.env.VITE_SOCKET_HOST, {
+	const socketIO = io(import.meta.env.VITE_SOCKET_HOST || "http://localhost:8000", {
 		auth: {
 			token: localStorage.getItem("x-access-token"),
 		},
@@ -113,12 +113,12 @@ const RoomView = () => {
 	};
 
 	return (
-		<Flex justifyContent={"center"} mt={"100px"}>
+		<Flex justifyContent={"center"} mt={"80px"}>
 			<Box width={"70%"} height={"100%"}>
 				{isLoadingMessages ? (
 					<SpinnerAnimation />
 				) : (
-					<Grid h={"700px"} templateRows="repeat(2, 1fr)" templateColumns="repeat(5, 1fr)" border={"1px solid gray"}>
+					<Grid h={"700px"} templateRows="repeat(2, 1fr)" templateColumns="repeat(5, 1fr)" border={"1px solid gray"} flexWrap={"wrap"}>
 						<GridItem rowSpan={2} colSpan={1} bg="transparent" borderRight={"1px solid gray"}>
 							<Box padding={5}>
 								<Input placeholder="Search" backgroundColor={"whiteAlpha.200"} />
