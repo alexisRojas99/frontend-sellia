@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Box, Button, Divider, Flex, FormControl, Grid, GridItem, Icon, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, FormControl, Grid, GridItem, Icon, Input, Text, useMediaQuery } from "@chakra-ui/react";
 import io from "socket.io-client";
 // import { socketIO } from "../../../lib/socket-client/socket-client";
 import ChatMessages from "../../../components/home/ChatMessages/ChatMessages";
@@ -12,6 +12,7 @@ import { getRoomById } from "../../../services/rooms";
 import SpinnerAnimation from "../../../components/animations/SpinnerAnimation";
 import { createMessage, getAllMessages } from "../../../services/messages";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
+import { FaTelegramPlane } from "react-icons/fa";
 import EmojiPicker from "emoji-picker-react";
 
 interface Messages {
@@ -112,31 +113,44 @@ const RoomView = () => {
 		setShowEmoji(false);
 	};
 
+	const [isLarge] = useMediaQuery("(min-width: 1300px)");
+	const [isMiddle] = useMediaQuery("(min-width: 800px)");
+
 	return (
-		<Flex justifyContent={"center"} mt={"80px"}>
-			<Box width={"70%"} height={"100%"}>
+		<Flex justifyContent={"center"} mt={isMiddle ? "80px" : "20px"} mb={"10px"}>
+			<Box width={isMiddle ? "70%" : "95%"} height={"100%"}>
 				{isLoadingMessages ? (
 					<SpinnerAnimation />
 				) : (
-					<Grid h={"700px"} templateRows="repeat(2, 1fr)" templateColumns="repeat(5, 1fr)" border={"1px solid gray"} flexWrap={"wrap"}>
-						<GridItem rowSpan={2} colSpan={1} bg="transparent" borderRight={"1px solid gray"}>
-							<Box padding={5}>
-								<Input placeholder="Search" backgroundColor={"whiteAlpha.200"} />
-							</Box>
+					<Grid
+						h={isMiddle ? "700px" : "70%"}
+						templateRows="repeat(2, 1fr)"
+						templateColumns={isLarge ? "repeat(5, 1fr)" : "repeat(4, 1fr)"}
+						border={"1px solid gray"}
+						flexWrap={"wrap"}
+					>
+						{isLarge ? (
+							<GridItem rowSpan={2} colSpan={1} bg="transparent" borderRight={"1px solid gray"}>
+								<Box padding={5}>
+									<Input placeholder="Search" backgroundColor={"whiteAlpha.200"} />
+								</Box>
 
-							<Box padding={5}>Online</Box>
-							<Box ml={5} mr={5}>
-								<OnlineUsers roomId={String(id)} DataArr={onlineUsers} />
-							</Box>
-						</GridItem>
+								<Box padding={5}>Online</Box>
+								<Box ml={5} mr={5}>
+									<OnlineUsers roomId={String(id)} DataArr={onlineUsers} />
+								</Box>
+							</GridItem>
+						) : (
+							<></>
+						)}
 
 						<GridItem colSpan={4} rowSpan={4} bg="transparent">
 							<Text padding={5} fontSize={"2xl"} fontWeight={"semibold"}>
 								{data?.data.name}
 							</Text>
 							<Divider borderColor={"gray"} />
-							<Box padding={5} h={"540px"}>
-								<Box pl={8} pr={8} h={"100%"} w={"100%"} overflow={"auto"} flexDirection={"row"} id={"chat-container"}>
+							<Box padding={5} h={isMiddle ? "540px" : "450px"}>
+								<Box pl={isMiddle ? 8 : 2} pr={isMiddle ? 8 : 2} h={"100%"} w={"100%"} overflow={"auto"} flexDirection={"row"} id={"chat-container"}>
 									<ChatMessages DataArr={chat} />
 									<Box ref={bottomRef} />
 								</Box>
@@ -165,8 +179,8 @@ const RoomView = () => {
 										}
 									}}
 								/>
-								<Button backgroundColor={"#0084ff"} onClick={() => handleOnClick()}>
-									Send
+								<Button backgroundColor={"transparent"} onClick={() => handleOnClick()}>
+									<Icon textColor={"#0084ff"} rotate={"45deg"} as={FaTelegramPlane} fontSize={"3xl"} color={"white"} />
 								</Button>
 							</Flex>
 						</GridItem>

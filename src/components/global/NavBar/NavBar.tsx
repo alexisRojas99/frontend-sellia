@@ -10,6 +10,7 @@ import {
 	DrawerOverlay,
 	Flex,
 	Input,
+	useMediaQuery,
 	useDisclosure,
 } from "@chakra-ui/react";
 import React, { FC, useContext, useRef } from "react";
@@ -34,10 +35,13 @@ const NavBar: FC<Props> = ({ options }) => {
 		navigate("/", { replace: true });
 	};
 
+	const [isLarge] = useMediaQuery("(min-width: 1300px)");
+	const [isMiddle] = useMediaQuery("(min-width: 800px)");
+
 	return (
 		<>
 			<Flex
-				backgroundColor={"#1a202c"}
+				backgroundColor={"dark"}
 				borderBottom={"1px solid gray"}
 				height={"70px"}
 				width={"100%"}
@@ -55,8 +59,8 @@ const NavBar: FC<Props> = ({ options }) => {
 						</Text>
 					</NavLink>
 				</Flex>
-				<Flex justifyContent={"flex-end"} alignItems={"center"} _hover={{ cursor: "pointer" }} width={"10%"}>
-					<Button backgroundColor={"red.500"} mr={5} onClick={() => handleLogOut()}>
+				<Flex justifyContent={"flex-end"} alignItems={"center"} _hover={{ cursor: "pointer" }} width={isMiddle ? "10%" : "40%"}>
+					<Button backgroundColor={"red.500"} mr={5} onClick={() => handleLogOut()} color={"white"}>
 						Log out
 					</Button>
 				</Flex>

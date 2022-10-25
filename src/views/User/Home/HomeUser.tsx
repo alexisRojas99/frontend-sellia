@@ -21,7 +21,7 @@ const HomeUser = () => {
 	const rooms: Room = data?.data;
 
 	return (
-		<Flex justifyContent={"center"} alignItems={"center"} height={"80vh"}>
+		<Flex justifyContent={"center"} alignItems={"center"} height={"80vh"} mt={6}>
 			<Flex justifyContent={"space-around"} flexWrap={"wrap"} gap={50} width={"50%"}>
 				{isLoading ? (
 					<SpinnerAnimation />
